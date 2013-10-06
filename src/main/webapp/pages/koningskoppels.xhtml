@@ -1,0 +1,102 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Koningskoppels</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					Elk jaar vindt op onze stand het "koningsschieten" plaats. Hierin nemen de verschillende leden
+					van de club het tegen elkaar op in een spannende afvalrace. In onderstaande tabel vind je voor ieder
+					jaar de mannelijke (koning) en vrouwelijke (koningin) schutter die aan het langste eind trok. 
+				</p>
+				<h:form id="listForm">
+					<p:dataTable id="list" value="#{koningskoppelBean.koppels}" var="koppel" rows="10"
+						paginator="true" paginatorPosition="bottom"
+						sortBy="#{koppel.jaar}" sortOrder="descending">
+						<p:column headerText="Jaar" sortBy="#{koppel.jaar}" styleClass="asap">
+							<h:link value="#{koppel.jaar}" outcome="/pages/koningskoppel">
+								<f:param name="jaar" value="#{koppel.jaar}"/>
+							</h:link>
+						</p:column>
+						<p:column headerText="Foto" styleClass="asap">
+							<h:link outcome="/pages/koningskoppel">
+								<h:graphicImage url="#{koppel.thumbnailUrl}" styleClass="photo"/>
+								<f:param name="jaar" value="#{koppel.jaar}"/>
+							</h:link>
+						</p:column>
+						<p:column headerText="Koning" sortBy="#{koppel.koningName}">
+							<h:link value="#{koppel.koningName}" outcome="/pages/koningskoppel">
+								<f:param name="jaar" value="#{koppel.jaar}"/>
+							</h:link>
+						</p:column>
+						<p:column headerText="Koningin" sortBy="#{koppel.koninginName}">
+							<h:link value="#{koppel.koninginName}" outcome="/pages/koningskoppel">
+								<f:param name="jaar" value="#{koppel.jaar}"/>
+							</h:link>
+						</p:column>
+						<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
+							<p:menuButton value="Opties">
+								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{koningskoppelBean.setCurrentKoppel(koppel.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{koningskoppelBean.setCurrentKoppel(koppel.id)}" update=":confirmDialogForm"/>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Nieuw koningskoppel" action="#{koningskoppelBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				<p:dialog header="Koningskoppel" widgetVar="dialog" modal="true" resizable="false" draggable="false">
+					<h:form id="dialogForm">
+						<p>
+							<p:outputLabel for="jaar" value="Jaar"/><br/>
+							<p:inputText id="jaar" value="#{koningskoppelBean.koppel.jaar}" maxlength="4" size="4" required="true">
+								<f:validateLongRange minimum="1900" maximum="2100"/>
+							</p:inputText>
+							<p:focus for="jaar"/>
+						</p>
+						<p>
+							<p:outputLabel for="koning" value="Koning"/><br/>
+							<h:selectOneMenu id="koning" value="#{koningskoppelBean.koppel.koning}">
+								<f:selectItems value="#{schutterBean.maleSchutters}" var="schutter" itemLabel="#{schutter.fullName}" itemValue="#{schutter}"/>
+								<f:selectItem itemLabel="Andere..." itemValue="#{null}"/>
+								<f:converter binding="#{schutterBean}"/>
+								<p:ajax update="customKoning" oncomplete="jQuery('.koningCustomInput').focus()"/>
+							</h:selectOneMenu>
+							<h:panelGroup id="customKoning">
+								<br/>
+								<p:inputText rendered="#{koningskoppelBean.koppel.customKoning}" styleClass="koningCustomInput" value="#{koningskoppelBean.koppel.koningEx}"/>
+							</h:panelGroup>
+						</p>
+						<p>
+							<p:outputLabel for="koningin" value="Koningin"/><br/>
+							<h:selectOneMenu id="koningin" value="#{koningskoppelBean.koppel.koningin}">
+								<f:selectItems value="#{schutterBean.femaleSchutters}" var="schutter" itemLabel="#{schutter.fullName}" itemValue="#{schutter}"/>
+								<f:selectItem itemLabel="Andere..." itemValue="#{null}"/>
+								<f:converter binding="#{schutterBean}"/>
+								<p:ajax update="customKoningin" oncomplete="jQuery('.koninginCustomInput').focus()"/>
+							</h:selectOneMenu>
+							<h:panelGroup id="customKoningin">
+								<br/>
+								<p:inputText rendered="#{koningskoppelBean.koppel.customKoningin}" styleClass="koninginCustomInput" value="#{koningskoppelBean.koppel.koninginEx}"/>
+							</h:panelGroup>
+						</p>
+						<p>
+							<p:commandButton value="Opslaan" action="#{koningskoppelBean.save}" update=":listForm:list"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je dit koningskoppel wil verwijderen?">
+					<h:form id="confirmDialogForm">
+						<p:commandButton value="Ja" update=":listForm:list" action="#{koningskoppelBean.delete}" onsuccess="confirmDialog.hide()"/>
+						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+					</h:form>
+				</p:confirmDialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

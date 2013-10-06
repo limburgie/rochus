@@ -1,0 +1,120 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">VLaS Test</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<h:form id="startButtonForm">
+					<h:panelGroup rendered="#{!vlasBean.started}">
+						<p>
+							Om een schutterslicentie te verkrijgen is iedere kandidaat-schutter verplicht om een <b>examen</b>
+							af te leggen. De test bestaat uit <b>20 meerkeuzevragen</b>. De kandidaat-schutter moet ten minste
+							<b>60%</b> van de vragen juist hebben om te slagen.
+						</p>
+						<p>
+							Om nieuwe schutters een degelijke voorbereiding te geven tot de test (en om het geheugen van
+							bestaande schutters op te frissen) hebben we de vragen, die op voorhand bekend
+							zijn, verwerkt in een online test. Zowel de vragen als de mogelijke antwoorden komen in
+							willekeurige volgorde aan bod. Succes!
+						</p>
+						<p style="text-align:center">
+							<p:commandButton value="Start een nieuwe test" onclick="startDialog.show()" styleClass="start-test"/>
+						</p>
+						<h:panelGroup rendered="#{!empty vlasBean.results}">
+							<br/>
+							<h2>Voorbije resultaten</h2>
+							<p>
+								Deze personen hebben de test al afgelegd. Kan jij beter?
+							</p>
+							<p:dataTable value="#{vlasBean.results}" var="result" rows="10"
+								 paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false">
+								<p:column headerText="Datum" styleClass="asap">
+									<h:outputText value="#{result.date}">
+										<f:convertDateTime pattern="EEE dd/MM/yyyy HH:mm"/>
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Naam">
+									#{result.name}
+								</p:column>
+								<p:column headerText="Score" styleClass="asap #{result.passed?'correct':'wrong'}Answer">
+									<h:outputText value="#{result.score}/#{result.nbQuestions} (#{result.percentage}%)"/>
+								</p:column>
+							</p:dataTable>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:form>
+				
+				<h:form id="questionForm">
+					<h:panelGroup rendered="#{vlasBean.started}">
+						<p>
+							<b><h:outputText value="Vraag #{vlasBean.questionNumber}: #{vlasBean.current.question.label}"/></b>
+						</p>
+						<p:selectOneRadio value="#{vlasBean.current.selectedOption}" layout="pageDirection">
+							<f:selectItems value="#{vlasBean.current.question.options}" var="option" itemLabel="#{option.label}" itemValue="#{option}"/>
+							<f:converter binding="#{vlasOptionConverter}"/>
+						</p:selectOneRadio>
+						<p>
+							<p:commandButton value="Volgende vraag" actionListener="#{vlasBean.next}" update=":questionForm" rendered="#{!vlasBean.lastQuestion}"/>
+							<p:commandButton value="Resultaat bekijken" actionListener="#{vlasBean.save}" onsuccess="resultsDialog.show()" update=":resultsForm" rendered="#{vlasBean.lastQuestion}"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				
+				<p:dialog widgetVar="resultsDialog" header="Resultaten" modal="true" closable="false" dynamic="true" width="800" resizable="false">
+					<p>
+						<h:outputText value="Je had #{vlasBean.exam.score} van de #{vlasBean.exam.nbQuestions} vragen correct, of "/>
+						<b>
+							<h:outputText value="#{vlasBean.exam.percentage}%"/>
+						</b>
+						<br/>
+						<b>
+							<h:outputText value="Je bent geslaagd!" rendered="#{vlasBean.exam.passed}" styleClass="#{vlasBean.exam.passed?'correct':'wrong'}Answer"/>
+							<h:outputText value="Je bent helaas niet geslaagd! Je hebt ten minste 60% nodig om te slagen." rendered="#{!vlasBean.exam.passed}" styleClass="#{vlasBean.exam.passed?'correct':'wrong'}Answer"/>
+						</b>
+					</p>
+					<h:form id="resultsForm">
+						<p:scrollPanel mode="native" style="max-height:500px">
+							<p:dataTable value="#{vlasBean.exam.answers}" var="answer" rowIndexVar="i">
+								<p:column styleClass="#{answer.correct?'correct':'wrong'}Answer">
+									#{i+1}
+								</p:column>
+								<p:column headerText="Vraag" styleClass="#{answer.correct?'correct':'wrong'}Answer">
+									#{answer.question.label}
+								</p:column>
+								<p:column headerText="Correct antwoord" styleClass="#{answer.correct?'correct':'wrong'}Answer">
+									#{answer.question.correctAnswer.label}
+								</p:column>
+								<p:column headerText="Jouw antwoord" styleClass="#{answer.correct?'correct':'wrong'}Answer">
+									#{answer.selectedOption.label}
+								</p:column>
+							</p:dataTable>
+						</p:scrollPanel>
+						<p>
+							<p:commandButton value="Sluiten" actionListener="#{vlasBean.reset}" onsuccess="resultsDialog.hide()" update=":startButtonForm,:questionForm"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				
+				<p:dialog widgetVar="startDialog" header="Start een nieuwe test" modal="true" resizable="false">
+					<h:form>
+						<p>
+							<p:outputLabel for="name" value="Naam:"/><br/>
+							<p:inputText id="name" value="#{vlasBean.name}" size="10"/>
+						</p>
+						<p>
+							<p:outputLabel for="nbQuestions" value="Hoeveel vragen?"/><br/>
+							<p:inputText id="nbQuestions" value="#{vlasBean.nbQuestions}" size="2" maxlength="2">
+								<f:validateLongRange minimum="5" maximum="#{vlasBean.maxNbQuestions}"/>
+							</p:inputText>
+							<p:slider for="nbQuestions" minValue="5" maxValue="#{vlasBean.maxNbQuestions}"/>
+						</p>
+						<p>
+							<p:commandButton value="Start!" actionListener="#{vlasBean.start}" update=":startButtonForm,:questionForm" onsuccess="startDialog.hide()"/>
+						</p>
+					</h:form>
+				</p:dialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

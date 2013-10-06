@@ -1,0 +1,32 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">#{schutterijBean.schutterij.name}</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					Huidige reeks: <b>#{schutterijBean.schutterij.series}</b>
+				</p>
+				<h:panelGroup layout="block" rendered="#{!empty schutterijBean.schutterij.website}">
+					<p>
+						Website: 
+						<h:outputLink value="#{schutterijBean.schutterij.website}">
+							#{schutterijBean.schutterij.website}
+						</h:outputLink>
+					</p>
+				</h:panelGroup>
+				<p>
+					Adres: <b>#{schutterijBean.schutterij.schietstand.address}</b>
+				</p>
+				<p:gmap zoom="15" type="ROADMAP" center="#{schutterijBean.schutterij.schietstand.coordinates}" style="width:690px;height:500px"
+					rendered="#{schutterijBean.schutterij.schietstand.coordinatesValid}" model="#{schutterijBean.mapModel}"/>
+				<p>
+					<p:button value="Terug naar schutterijen" outcome="/pages/schutterijen"/>
+				</p>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

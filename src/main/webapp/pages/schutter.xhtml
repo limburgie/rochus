@@ -1,0 +1,33 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">#{schutterBean.schutter.fullName}</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<h:panelGroup rendered="#{!empty schutterBean.schutter.pictureUrl}">
+					<p>
+						<h:graphicImage url="#{schutterBean.schutter.pictureUrl}" styleClass="photo"/>
+					</p>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!empty schutterBean.koningsPartners}">
+					<p>Werd #{schutterBean.schutter.koningLabel} in:</p>
+					<p:dataList value="#{schutterBean.koningsPartners}" var="partner" itemType="circle">
+						<b>#{partner.jaar}</b> met <b>#{partner.partnerName}</b>
+					</p:dataList>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!empty schutterBean.achievements}">
+					<p>Behaalde prijzen:</p>
+					<p:dataList value="#{schutterBean.achievements}" var="achievement" itemType="circle">
+						<b>#{achievement.jaar}</b>: #{achievement.price}
+					</p:dataList>
+				</h:panelGroup>
+				<p>
+					<p:button value="Terug naar schutters" outcome="/pages/schutters"/>
+				</p>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

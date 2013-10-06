@@ -1,0 +1,98 @@
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0 http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+	
+	<url-mapping id="home">
+		<pattern value="/" />
+		<view-id value="/pages/home.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="fotoalbums">
+		<pattern value="/fotoalbums" />
+		<view-id value="/pages/fotoalbums.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="fotoalbum">
+		<pattern value="/fotoalbum/#{albumId}" />
+		<view-id value="/pages/fotoalbum.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="schutters">
+		<pattern value="/schutters" />
+		<view-id value="/pages/schutters.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="schutter">
+		<pattern value="/schutter/#{schutterId}" />
+		<view-id value="/pages/schutter.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="schutterijen">
+		<pattern value="/schutterijen" />
+		<view-id value="/pages/schutterijen.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="schutterij">
+		<pattern value="/schutterij/#{schutterijId}" />
+		<view-id value="/pages/schutterij.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="wedstrijdschema">
+		<pattern value="/wedstrijdschema" />
+		<view-id value="/pages/wedstrijdschema.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="kalender">
+		<pattern value="/kalender" />
+		<view-id value="/pages/kalender.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="hall-of-fame">
+		<pattern value="/hall-of-fame" />
+		<view-id value="/pages/halloffame.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="koningskoppels">
+		<pattern value="/koningskoppels" />
+		<view-id value="/pages/koningskoppels.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="koningskoppel">
+		<pattern value="/koningskoppel/#{jaar}" />
+		<view-id value="/pages/koningskoppel.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="klepschieten">
+		<pattern value="/klepschieten" />
+		<view-id value="/pages/klepschieten.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="patroonheilige">
+		<pattern value="/patroonheilige" />
+		<view-id value="/pages/patroonheilige.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="geschiedenis">
+		<pattern value="/geschiedenis" />
+		<view-id value="/pages/geschiedenis.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="vlastest">
+		<pattern value="/vlastest" />
+		<view-id value="/pages/vlastest.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="links">
+		<pattern value="/links" />
+		<view-id value="/pages/links.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="contact">
+		<pattern value="/contact" />
+		<view-id value="/pages/contact.jsf"/>
+	</url-mapping>
+	
+	<url-mapping id="events">
+		<pattern value="/events" />
+		<view-id value="/pages/events.jsf"/>
+	</url-mapping>
+</pretty-config>

@@ -1,0 +1,120 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Schutterijen</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					In het huidige seizoen is dit de reeksindeling van de schutterijen van het Schuttersverbond Zand- en Leemstreek.
+					Klik op een schutterij om de contactinformatie en een plannetje te bekijken.
+				</p>
+				<h:form id="listForm">
+					<ui:repeat value="#{constantsBean.series}" var="serie">
+						<p:dataTable value="#{schutterijBean.getSchutterijen(serie)}" var="schutterij" styleClass="no-header">
+							<p:column headerText="Reeks #{serie}">
+								<h:link value="#{schutterij.name}" outcome="/pages/schutterij">
+									<f:param name="schutterijId" value="#{schutterij.urlTitle}"/>
+								</h:link>
+							</p:column>
+							<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
+								<p:menuButton value="Opties">
+									<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{schutterijBean.setCurrentSchutterij(schutterij.id)}" update=":dialogForm"/>
+									<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{schutterijBean.setCurrentSchutterij(schutterij.id)}" update=":confirmDialogForm"/>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<br/>
+					</ui:repeat>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Nieuwe schutterij" action="#{schutterijBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				<p:dialog header="Schutterij" widgetVar="dialog" modal="true" resizable="false" draggable="false">
+					<h:form id="dialogForm">
+						<p:panelGrid columns="2">
+							<h:panelGroup>
+								<p>
+									<p:outputLabel for="name" value="Naam"/><br/>
+									<p:inputText id="name" value="#{schutterijBean.schutterij.name}" required="true"/>
+								</p>
+								<p>
+									<p:outputLabel for="series" value="Reeks"/><br/>
+									<h:selectOneMenu id="series" value="#{schutterijBean.schutterij.series}" required="true">
+										<f:selectItem itemLabel="" itemValue=""/>
+										<f:selectItems value="#{constantsBean.series}"/>
+									</h:selectOneMenu>
+								</p>
+								<p>
+									<p:outputLabel for="website" value="Website"/><br/>
+									<p:inputText id="website" value="#{schutterijBean.schutterij.website}"/>
+								</p>
+								<p>
+									<p:commandButton value="Opslaan" actionListener="#{schutterijBean.save}" update=":dialogForm,:listForm"/>
+								</p>
+							</h:panelGroup>
+							<h:panelGroup styleClass="right-col" layout="block">
+								<p>
+									<h:selectBooleanCheckbox id="eigenSchietstand" value="#{schutterijBean.eigenSchietstand}" label="Heeft eigen schietstand">
+										<p:ajax update="welOfGeenEigenSchietstand"/>
+									</h:selectBooleanCheckbox>
+									<p:outputLabel for="eigenSchietstand" value="Heeft eigen schietstand"/>
+								</p>
+								<h:panelGroup id="welOfGeenEigenSchietstand" layout="block">
+									<h:panelGroup rendered="#{schutterijBean.eigenSchietstand}">
+										<p>
+											<p:outputLabel for="address" value="Adres schietstand"/><br/>
+											<p:inputText id="address" value="#{schutterijBean.schutterij.schietstand.address}" required="true"/>
+										</p>
+										<p>
+											<h:selectBooleanCheckbox id="autocalculateCoords" value="#{schutterijBean.schutterij.schietstand.autocalculateCoords}" label="Coördinaten automatisch berekenen">
+												<p:ajax update="coordinates"/>
+											</h:selectBooleanCheckbox>
+											<p:outputLabel for="autocalculateCoords" value="Coördinaten automatisch berekenen"/>
+										</p>
+										<h:panelGroup id="coordinates">
+											<h:panelGroup rendered="#{!schutterijBean.schutterij.schietstand.autocalculateCoords}">
+												<p>
+													<p:outputLabel for="latitude" value="Breedtegraad"/><br/>
+													<p:inputText id="latitude" value="#{schutterijBean.schutterij.schietstand.latitude}">
+														<f:convertNumber minFractionDigits="6" maxFractionDigits="6"/>
+													</p:inputText>
+												</p>
+												<p>
+													<p:outputLabel for="longitude" value="Lengtegraad"/><br/>
+													<p:inputText id="longitude" value="#{schutterijBean.schutterij.schietstand.longitude}">
+														<f:convertNumber minFractionDigits="6" maxFractionDigits="6"/>
+													</p:inputText>
+												</p>
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{!schutterijBean.eigenSchietstand}">
+										<p>
+											<p:outputLabel for="schietstand" value="Schietstand"/><br/>
+											<h:selectOneMenu id="schietstand" value="#{schutterijBean.schutterij.schietstand}" required="true">
+												<f:converter binding="#{schietstandBean}"/>
+												<f:selectItem itemLabel="" itemValue="#{null}"/>
+												<f:selectItems value="#{schutterijBean.schutterijenMetEigenSchietstand}" var="schutterij" itemLabel="#{schutterij.name}" itemValue="#{schutterij.schietstand}"/>
+											</h:selectOneMenu>
+										</p>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						</p:panelGrid>
+					</h:form>
+				</p:dialog>
+				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je deze schutterij wil verwijderen?">
+					<h:form id="confirmDialogForm">
+						<p:commandButton value="Ja" update=":listForm" action="#{schutterijBean.delete}" onsuccess="confirmDialog.hide()"/>
+						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+					</h:form>
+				</p:confirmDialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

@@ -1,0 +1,108 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Wedstrijdschema</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<h:form id="listForm">
+					<p>
+						Hieronder vind je de wedstrijden die plaatsvinden in het huidige seizoen van
+						Schuttersverbond Zand- en Leemstreek. Klik op de organisator van een wedstrijd
+						voor de contactinformatie.
+					</p>
+					<p>
+						<p:selectOneButton value="#{wedstrijdBean.showPastGames}">
+							<f:selectItem itemLabel="Aankomende wedstrijden" itemValue="#{false}"/>
+							<f:selectItem itemLabel="Alle wedstrijden" itemValue="#{true}"/>
+							<p:ajax listener="#{wedstrijdBean.retrieveGames}" update="list"/>
+						</p:selectOneButton>
+					</p>
+					<p:dataTable id="list" value="#{wedstrijdBean.wedstrijden}" var="wedstrijd" rows="15"
+						paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false">
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column colspan="3" headerText="Datum"/>
+								<p:column headerText="Organisator"/>
+								<p:column headerText="Type wedstrijd"/>
+								<p:column headerText="" rendered="#{accountBean.loggedIn}"/>
+							</p:row>
+						</p:columnGroup>
+						<p:column styleClass="asap">
+							<h:outputText value="#{wedstrijd.date}">
+								<f:convertDateTime pattern="EEEE"/>
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="asap">
+							<h:outputText value="#{wedstrijd.date}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="asap">
+							<h:outputText value="#{wedstrijd.date}">
+								<f:convertDateTime pattern="HH:mm"/>
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="full-size">
+							<h:link value="#{wedstrijd.organizer.name}" outcome="/pages/schutterij">
+								<f:param name="schutterijId" value="#{wedstrijd.organizer.urlTitle}"/>
+							</h:link>
+						</p:column>
+						<p:column styleClass="asap">
+							#{wedstrijd.type.name}
+						</p:column>
+						<p:column rendered="#{accountBean.loggedIn}">
+							<p:menuButton value="Opties">
+								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{wedstrijdBean.setCurrentWedstrijd(wedstrijd.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{wedstrijdBean.setCurrentWedstrijd(wedstrijd.id)}" update=":confirmDialogForm"/>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Nieuwe wedstrijd" action="#{wedstrijdBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				<p:dialog header="Wedstrijd" widgetVar="dialog" modal="true" resizable="false" draggable="false">
+					<h:form id="dialogForm">
+						<p>
+							<p:outputLabel for="organizer" value="Organisator"/><br/>
+							<h:selectOneMenu id="organizer" value="#{wedstrijdBean.wedstrijd.organizer}" required="true">
+								<f:converter binding="#{schutterijBean}"/>
+								<f:selectItem itemLabel="" itemValue="#{null}"/>
+								<f:selectItems value="#{schutterijBean.schutterijen}" var="schutterij" itemLabel="#{schutterij.name}" itemValue="#{schutterij}"/>
+							</h:selectOneMenu>
+						</p>
+						<p>
+							<p:outputLabel for="type" value="Type"/><br/>
+							<h:selectOneMenu id="type" value="#{wedstrijdBean.wedstrijd.type}" required="true">
+								<f:selectItem itemLabel="" itemValue=""/>
+								<f:selectItems value="#{constantsBean.wedstrijdTypes}" var="type" itemLabel="#{type.name}" itemValue="#{type}"/>
+							</h:selectOneMenu>
+						</p>
+						<p>
+							<p:outputLabel for="date" value="Datum"/><br/>
+							<p:calendar id="date" value="#{wedstrijdBean.wedstrijd.date}" required="true" size="8"/>
+							om
+							<p:inputMask id="time" value="#{wedstrijdBean.time}" mask="99:99" required="true" size="5">
+								<f:convertDateTime pattern="HH:mm"/>
+							</p:inputMask>
+						</p>
+						<p>
+							<p:commandButton value="Opslaan" action="#{wedstrijdBean.save}" update=":dialogForm,:listForm:list"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je deze wedstrijd wil verwijderen?">
+					<h:form id="confirmDialogForm">
+						<p:commandButton value="Ja" update=":listForm:list" action="#{wedstrijdBean.delete}" onsuccess="confirmDialog.hide()"/>
+						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+					</h:form>
+				</p:confirmDialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

@@ -1,0 +1,108 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Schutters</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					Op deze pagina vind je een overzicht van alle leden van onze schutterij.
+					Klik op de naam of foto van een lid om meer over hem of haar te lezen.
+				</p>
+				<h:form id="listForm">
+					<p:dataTable id="list" value="#{schutterBean.schutters}" var="schutter">
+						<p:column styleClass="asap">
+							<h:link outcome="/pages/schutter" rendered="#{!empty schutter.pictureUrl}">
+								<h:graphicImage url="#{schutter.pictureUrl}" styleClass="photo"/>
+								<f:param name="schutterId" value="#{schutter.urlTitle}"/>
+							</h:link>
+						</p:column>
+						<p:column headerText="Naam" styleClass="full-size">
+							<h:link value="#{schutter.fullName}" outcome="/pages/schutter">
+								<f:param name="schutterId" value="#{schutter.urlTitle}"/>
+							</h:link>
+						</p:column>
+						<p:column headerText="E-mailadres" rendered="#{accountBean.loggedIn}">
+							<h:link value="#{schutter.emailAddress}" outcome="/pages/schutter">
+								<f:param name="schutterId" value="#{schutter.urlTitle}"/>
+							</h:link>
+						</p:column>
+						<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
+							<p:menuButton value="Opties">
+								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{schutterBean.setCurrentSchutter(schutter.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{schutterBean.setCurrentSchutter(schutter.id)}" update=":confirmDialogForm"/>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Nieuwe schutter" action="#{schutterBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				<p:dialog header="Schutter" widgetVar="dialog" modal="true" resizable="false">
+					<h:form id="dialogForm">
+						<p>
+							<p:outputLabel for="firstName" value="Voornaam"/><br/>
+							<p:inputText id="firstName" value="#{schutterBean.schutter.firstName}" required="true" size="10"/>
+							<p:focus for="firstName"/>
+						</p>
+						<p>
+							<p:outputLabel for="lastName" value="Achternaam"/><br/>
+							<p:inputText id="lastName" value="#{schutterBean.schutter.lastName}" required="true" size="15"/>
+						</p>
+						<p>
+							<p:outputLabel for="joinYear" value="Aansluitingsjaar"/><br/>
+							<p:inputText id="joinYear" value="#{schutterBean.schutter.joinYear}" maxlength="4" size="4">
+								<f:validateLongRange minimum="1900" maximum="2100"/>
+							</p:inputText>
+						</p>
+						<p>
+							<h:selectBooleanCheckbox id="active" value="#{schutterBean.schutter.active}"/>
+							<p:outputLabel for="active" value="Actief"/><br/>
+						</p>						
+						<p>
+							<h:selectBooleanCheckbox id="male" value="#{schutterBean.schutter.male}"/>
+							<p:outputLabel for="male" value="Mannelijk"/>
+						</p>
+						<p>
+							<p:outputLabel for="birthDate" value="Geboortedatum"/><br/>
+							<p:calendar id="birthDate" value="#{schutterBean.schutter.birthDate}" pattern="#{msg.date_format}" 
+								navigator="true" yearRange="c-100:c" size="10"/>
+						</p>
+						<p>
+							<p:outputLabel for="emailAddress" value="E-mailadres"/><br/>
+							<p:inputText id="emailAddress" value="#{schutterBean.schutter.emailAddress}" size="25"/>
+						</p>
+						<p>
+							<p:commandButton value="Opslaan" actionListener="#{schutterBean.save}" update=":dialogForm,:listForm:list"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				<!--  
+				<p:dialog header="Foto bijwerken" widgetVar="fotoDialog" modal="true" resizable="false">
+					<h:form id="fotoDialogForm">
+						<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="true" fileUploadListener="#{schutterBean.pictureUploaded}"
+							label="Uploaden" update="cropper"/>
+						<h:panelGroup id="cropper">
+							<p:imageCropper rendered="#{!empty schutterBean.pictureFileName}" value="#{schutterBean.croppedPicture}"
+								image="#{schutterBean.pictureFileName}" aspectRatio="1.0" initialCoords="0,0,100,100"/>
+						</h:panelGroup>
+						<p>
+							<p:commandButton value="Uitknippen" actionListener="#{schutterBean.crop}" update=":fotoDialogForm,:listForm:list"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				-->
+				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je deze schutter wil verwijderen?">
+					<h:form id="confirmDialogForm">
+						<p:commandButton value="Ja" update=":listForm:list" action="#{schutterBean.delete}" onsuccess="confirmDialog.hide()"/>
+						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+					</h:form>
+				</p:confirmDialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

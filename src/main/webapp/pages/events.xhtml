@@ -1,0 +1,99 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Evenementen</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<h:form id="listForm">
+					<p:dataTable id="list" value="#{eventBean.events}" var="event" rows="15"
+						paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+						sortBy="#{event.startDate}" sortOrder="descending">
+						<p:column headerText="Startdatum" styleClass="asap" sortBy="#{event.startDate}">
+							<h:outputText value="#{event.startDate}" rendered="#{!event.allDay}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+							</h:outputText>
+							<h:outputText value="#{event.startDate}" rendered="#{event.allDay}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Einddatum" styleClass="asap" sortBy="#{event.endDate}">
+							<h:outputText value="#{event.endDate}" rendered="#{!event.allDay}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+							</h:outputText>
+							<h:outputText value="#{event.endDate}" rendered="#{event.allDay}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Naam" styleClass="full-size" sortBy="#{event.title}">
+							#{event.title}
+						</p:column>
+						<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
+							<p:menuButton value="Opties">
+								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{eventBean.setCurrentEvent(event.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{eventBean.setCurrentEvent(event.id)}" update=":confirmDialogForm"/>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Nieuw evenement" action="#{eventBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				<p:dialog header="Evenement" widgetVar="dialog" modal="true" resizable="false">
+					<h:form id="dialogForm">
+						<p>
+							<p:outputLabel for="title" value="Naam"/><br/>
+							<p:inputText id="title" value="#{eventBean.event.title}" required="true" size="20"/>
+							<p:focus for="title"/>
+						</p>
+						<p>
+							<p:outputLabel for="startDate" value="Begindatum"/><br/>
+							<p:calendar id="startDate" value="#{eventBean.event.startDate}" pattern="#{msg.date_format}" 
+								navigator="true" yearRange="c-1:c+1" size="10" required="true"/>
+							<h:panelGroup id="startDateTime">
+								<h:panelGroup rendered="#{!eventBean.event.allDay}">
+									om
+									<p:inputMask id="startTime" value="#{eventBean.startTime}" mask="99:99" required="true" size="5">
+										<f:convertDateTime pattern="HH:mm"/>
+									</p:inputMask>
+								</h:panelGroup>
+							</h:panelGroup>
+						</p>
+						<p>
+							<p:outputLabel for="endDate" value="Einddatum"/><br/>
+							<p:calendar id="endDate" value="#{eventBean.event.endDate}" pattern="#{msg.date_format}" 
+								navigator="true" yearRange="c-1:c+1" size="10"/>
+							<h:panelGroup id="endDateTime">
+								<h:panelGroup rendered="#{!eventBean.event.allDay}">
+									om
+									<p:inputMask id="endTime" value="#{eventBean.endTime}" mask="99:99" size="5">
+										<f:convertDateTime pattern="HH:mm"/>
+									</p:inputMask>
+								</h:panelGroup>
+							</h:panelGroup>
+						</p>
+						<p>
+							<h:selectBooleanCheckbox id="allDay" value="#{eventBean.event.allDay}">
+								<p:ajax update="startDateTime,endDateTime"/>
+							</h:selectBooleanCheckbox>
+							<p:outputLabel for="allDay" value="Volledige dag"/><br/>
+						</p>
+						<p>
+							<p:commandButton value="Opslaan" actionListener="#{eventBean.save}" update=":dialogForm,:listForm:list"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je dit evenement wil verwijderen?">
+					<h:form id="confirmDialogForm">
+						<p:commandButton value="Ja" update=":listForm:list" action="#{eventBean.delete}" onsuccess="confirmDialog.hide()"/>
+						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+					</h:form>
+				</p:confirmDialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

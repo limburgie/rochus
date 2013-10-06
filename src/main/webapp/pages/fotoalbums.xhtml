@@ -1,0 +1,38 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Fotoalbums</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					Op deze pagina kan je alle kiekjes van vroeger en nu bekijken.
+				</p>
+				<h:form>
+					<p:dataGrid id="albums" value="#{photoBean.albums}" var="album" columns="3" rows="6"
+						paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+						styleClass="albums">
+						<p:panel header="#{album.name}" styleClass="album-panel">
+							<h:link outcome="/pages/fotoalbum">
+								<h:graphicImage url="#{album.thumbnailUrl}"/>
+								<f:param name="albumId" value="#{album.urlTitle}"/>
+							</h:link>
+							<p>
+								<h:outputText value="#{album.date}" styleClass="month-date">
+									<f:convertDateTime pattern="MMMMM yyyy"/>
+								</h:outputText>
+							</p>
+						</p:panel>
+					</p:dataGrid>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Synchroniseren" action="#{photoBean.synchronize}" update="albums"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

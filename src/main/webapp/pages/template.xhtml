@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="nl" dir="ltr"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title><ui:insert name="title"/> | #{msg.site_title}</title>
+		<h:outputStylesheet name="css/screen.css"/>
+		<h:outputScript library="js" name="locales.js"/> 
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript">
+			$.noConflict();
+		</script>
+	</h:head>
+	<h:body>
+		<f:view locale="#{constantsBean.locale}">
+			<div id="wrapper">
+				<div id="container" class="clear">
+					<div id="header">
+						<div id="logo">
+							<h1>
+								<h:link outcome="/pages/home">
+									<h:graphicImage name="images/logo_small.gif" alt="#{msg.site_title}"/>
+									<h:outputText value="#{msg.site_title}"/>
+								</h:link>
+							</h1>
+						</div>
+						<h:form>
+							<ul class="toplinks">
+								<li>
+									<p:commandLink value="Login" onclick="loginDialog.show()" rendered="#{!accountBean.loggedIn}"/>
+									<p:commandLink value="Logout" action="#{accountBean.logout}" ajax="false" rendered="#{accountBean.loggedIn}"/>
+								</li>
+								<li><h:link value="Links" outcome="/pages/links"/></li>
+								<li><h:link value="Contact" outcome="/pages/contact"/></li>
+							</ul>
+						</h:form>
+					</div>
+					<div id="sidebar">
+						<h:form>
+							<h2>Onze club</h2>
+							<ul class="menu">
+								<li><h:link value="Schutters" outcome="/pages/schutters"/></li>
+								<li><h:link value="Fotoalbums" outcome="/pages/fotoalbums"/></li>
+								<li><h:link value="Geschiedenis" outcome="/pages/geschiedenis"/></li>
+								<li><h:link value="Onze patroonheilige" outcome="/pages/patroonheilige"/></li>
+							</ul>
+							<h2>Seizoen 2013</h2>
+							<ul class="menu">
+								<li><h:link value="Schutterijen" outcome="/pages/schutterijen"/></li>
+								<li><h:link value="Wedstrijdschema" outcome="/pages/wedstrijdschema"/></li>
+								<li><h:link value="Kalender" outcome="/pages/kalender"/></li>
+								<h:panelGroup rendered="#{accountBean.loggedIn}">
+									<li><h:link value="Evenementen" outcome="/pages/events"/></li>
+								</h:panelGroup>
+							</ul>
+							<h2>Historisch</h2>
+							<ul class="menu">
+								<li><h:link value="Hall of fame" outcome="/pages/halloffame"/></li>
+								<li><h:link value="Koningskoppels" outcome="/pages/koningskoppels"/></li>
+							</ul>
+							<h2>Klepschieten</h2>
+							<ul class="menu">
+								<li><h:link value="Wat is klepschieten?" outcome="/pages/klepschieten"/></li>
+								<li><h:link value="VLaS examen" outcome="/pages/vlastest"/></li>
+							</ul>
+						</h:form>
+					</div>
+					<div id="center">
+						<div id="main">
+							<div class="right-corner">
+								<div class="left-corner">
+									<div class="breadcrumb">
+										<h:link outcome="/pages/home">
+											Home
+										</h:link>
+									</div>
+									<h2><ui:insert name="title"/></h2>
+									<div class="clear">
+										<p:growl autoUpdate="true"/>
+										<ui:insert name="body"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="footer">
+				<p>
+					Rochus v#{build.version} - Laatste update op #{build.date} - Ontwikkeld door Peter Mesotten.
+				</p>
+			</div>
+			<p:dialog widgetVar="loginDialog" header="Aanmelden" modal="true" resizable="false" draggable="false">
+				<h:form>
+					<p>
+						<p:outputLabel for="password" value="Wachtwoord"/><br/>
+						<p:password id="password" value="#{accountBean.password}"/>
+					</p>
+					<p>
+						<p:commandButton action="#{accountBean.login}" value="Aanmelden"/>
+					</p>
+				</h:form>
+			</p:dialog>
+			<p:ajaxStatus onstart="showStatusDialog()" oncomplete="hideStatusDialog()"/>
+			<p:dialog header="Even geduld..." widgetVar="statusDialog" modal="true" closable="false" resizable="false">
+				<h:panelGrid columns="2" style="margin:0">
+					<p:graphicImage library="images" name="ajaxloading.gif" style="padding-right:10px"/>
+					<h:panelGroup>
+						Een goede schutter heeft veel geduld. De website is bezig om je opdracht te verwerken.<br/>
+						Als dit scherm niet verdwijnt, herlaad dan de pagina.
+					</h:panelGroup>
+				</h:panelGrid>
+			</p:dialog>
+		</f:view>
+		<script type="text/javascript">
+			var statusDlgTimer = null;
+			function showStatusDialog() {
+				if (statusDlgTimer == null) {
+					statusDlgTimer = setTimeout("statusDialog.show()", 1000);
+				}
+			}
+
+			function hideStatusDialog() {
+				if (statusDlgTimer != null) {
+					clearTimeout(statusDlgTimer);
+					statusDialog.hide();
+					statusDlgTimer = null;
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-38082923-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</h:body>
+</html>

@@ -1,0 +1,43 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Koningskoppel #{koningskoppelBean.koppel.jaar}</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<ul>
+					<li>Koning: 
+						<h:panelGroup rendered="#{koningskoppelBean.koppel.customKoning}">
+							<b>#{koningskoppelBean.koppel.koningName}</b>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{!koningskoppelBean.koppel.customKoning}">
+							<h:link outcome="/pages/schutter">
+								<b>#{koningskoppelBean.koppel.koningName}</b>
+								<f:param name="schutterId" value="#{koningskoppelBean.koppel.koning.urlTitle}"/>
+							</h:link>
+						</h:panelGroup>
+					</li>
+					<li>Koningin: 
+						<h:panelGroup rendered="#{koningskoppelBean.koppel.customKoningin}">
+							<b>#{koningskoppelBean.koppel.koninginName}</b>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{!koningskoppelBean.koppel.customKoningin}">
+							<h:link outcome="/pages/schutter">
+								<b>#{koningskoppelBean.koppel.koninginName}</b>
+								<f:param name="schutterId" value="#{koningskoppelBean.koppel.koningin.urlTitle}"/>
+							</h:link>
+						</h:panelGroup>
+					</li>
+				</ul>
+				<p>
+					<h:graphicImage url="#{koningskoppelBean.koppel.pictureUrl}" styleClass="photo"/>
+				</p>
+				<p>
+					<p:button value="Terug naar koningskoppels" outcome="/pages/koningskoppels"/>
+				</p>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

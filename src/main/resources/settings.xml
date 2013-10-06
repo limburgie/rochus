@@ -1,0 +1,14 @@
+<settings>
+	<servers>
+		<server>
+			<id>cloudbees-snapshots</id>
+			<username>limburgie</username>
+			<password>2deKandi</password>
+		</server>
+		<server>
+			<id>cloudbees-releases</id>
+			<username>limburgie</username>
+			<password>2deKandi</password>
+		</server>
+	</servers>
+</settings>

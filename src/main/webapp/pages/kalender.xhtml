@@ -1,0 +1,79 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Kalender</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					Op deze kalender vind je alle wedstrijden van het huidige seizoen, maar ook de verjaardagen
+					en andere belangrijke gebeurtenissen i.v.m. onze schutterij.
+				</p>
+				<h:form>
+					<p:schedule value="#{calendarBean.scheduleModel}" locale="nl"
+						draggable="false" resizable="false" firstHour="9" slotMinutes="60" axisFormat="HH:mm" 
+						timeFormat="HH:mm', columnFormat : {month : 'ddd', week : 'ddd d/M', day : 'dddd d/M'}, dummy:'"
+						minTime="9" maxTime="22" rightHeaderTemplate="month,agendaWeek" view="month">
+						<p:ajax event="eventSelect" listener="#{calendarBean.selectEvent}" update="eventDetails" oncomplete="eventDialog.show()"/>
+					</p:schedule>
+					<h:panelGroup id="eventDetails">
+						<p:dialog widgetVar="eventDialog" header="#{calendarBean.label}" modal="true" resizable="false">
+							<p><b>#{calendarBean.selectedEvent.title}</b></p>
+							<h:panelGroup rendered="#{calendarBean.birthday}">
+								<p:panelGrid columns="2">
+									<h:graphicImage url="#{calendarBean.schutter.pictureUrl}"/>
+									<h:outputText value="#{calendarBean.schutter.fullName} is vandaag jarig."/>
+								</p:panelGrid>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{calendarBean.game}">
+								<p>
+									<h:outputText value="#{calendarBean.wedstrijd.date}">
+										<f:convertDateTime pattern="EEEE dd/MM/yyyy HH:mm"/>
+									</h:outputText>
+								</p>
+								<p>
+									Adres: <b>#{calendarBean.wedstrijd.organizer.schietstand.address}</b>
+								</p>
+								<p:gmap zoom="15" type="ROADMAP" center="#{calendarBean.wedstrijd.organizer.schietstand.coordinates}" style="width:690px;height:500px"
+									rendered="#{calendarBean.wedstrijd.organizer.schietstand.coordinatesValid}" model="#{calendarBean.mapModel}"/>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{calendarBean.event}">
+								<p>
+									Begin: 
+									<b>
+										<h:outputText value="#{calendarBean.gebeurtenis.startDate}" rendered="#{!calendarBean.gebeurtenis.allDay}">
+											<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+										</h:outputText>
+										<h:outputText value="#{calendarBean.gebeurtenis.startDate}" rendered="#{calendarBean.gebeurtenis.allDay}">
+											<f:convertDateTime pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</b>
+								</p>
+								<h:panelGroup rendered="#{!empty calendarBean.gebeurtenis.endDate}">
+									<p>
+										Einde:
+										<b>
+											<h:outputText value="#{calendarBean.gebeurtenis.endDate}" rendered="#{!calendarBean.gebeurtenis.allDay}">
+												<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+											</h:outputText>
+											<h:outputText value="#{calendarBean.gebeurtenis.endDate}" rendered="#{calendarBean.gebeurtenis.allDay}">
+												<f:convertDateTime pattern="dd/MM/yyyy"/>
+											</h:outputText>
+										</b>
+									</p>
+								</h:panelGroup>
+							</h:panelGroup>
+						</p:dialog>
+					</h:panelGroup>
+				</h:form>
+				<h:panelGroup rendered="#{accountBean.loggedIn}">
+					<p>
+						<p:button value="Evenementen beheren" outcome="/pages/events"/>
+					</p>
+				</h:panelGroup>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

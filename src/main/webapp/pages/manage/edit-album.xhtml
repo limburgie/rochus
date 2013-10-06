@@ -1,0 +1,50 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="../template.xhtml">
+		<ui:define name="title">
+			#{photoAlbumBean.album.name}
+		</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<h:form enctype="multipart/form-data">
+					<p:focus for="name"/>
+					<h:panelGrid columns="3">
+						<p:outputLabel for="name" value="Naam"/>
+						<p:inputText id="name" value="#{photoAlbumBean.album.name}" required="true"/>
+						<p:message for="name"/>
+					</h:panelGrid>
+					<h:panelGroup layout="block" rendered="#{!photoAlbumBean.newAlbum}">
+						<br/>
+						<p:fileUpload mode="advanced" multiple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+							id="photos" fileUploadListener="#{photoAlbumBean.handleUpload}" update="photoList" rendered="#{!photoAlbumBean.newAlbum}"/>
+					</h:panelGroup>
+					<h:panelGroup id="photoList" layout="block" rendered="#{!photoAlbumBean.newAlbum}">
+						<br/>
+						<p:dataTable value="#{photoAlbumBean.album.photos}" var="photo" rendered="#{!empty photoAlbumBean.album.photos}">
+							<p:column headerText="Foto">
+								<h:graphicImage value="/image/?imageId=#{photo.id}" height="50"/>
+							</p:column>
+							<p:column headerText="Omschrijving">
+								<p:inputText value="#{photo.description}" size="50"/>
+							</p:column>
+							<p:column headerText="Vb">
+								<p:selectBooleanCheckbox value="#{photo.thumbnail}"/>
+							</p:column>
+							<p:column>
+								<p:commandButton value="Verwijderen" action="#{photoAlbumBean.deletePhoto}" update="@form">
+									<f:setPropertyActionListener target="#{photoAlbumBean.photo}" value="#{photo}"/>
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+					<p>
+						<p:commandButton value="Opslaan" action="#{photoAlbumBean.save}" ajax="false"/>
+					</p>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>

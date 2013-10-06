@@ -1,0 +1,70 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">Hall of fame</ui:define>
+		<ui:define name="body">
+			<div class="content clear">
+				<p>
+					Doorheen de jaren hebben onze schutterij en haar leden heel wat prijzen binnengehaald.
+					Hieronder volgt een overzicht van onze prijzenkast, gerangschikt op datum.
+				</p>
+				<h:form id="listForm">
+					<p:dataTable id="list" value="#{hallOfFameBean.items}" var="item" rows="15"
+						paginator="true" paginatorPosition="bottom"
+						sortBy="#{item.jaar}" sortOrder="descending">
+						<p:column headerText="Jaar" sortBy="#{item.jaar}" styleClass="asap">
+							<h:outputText value="#{item.jaar}"/>
+						</p:column>
+						<p:column headerText="Prijs" sortBy="#{item.prijs}">
+							<h:outputText value="#{item.prijs}"/>
+						</p:column>
+						<p:column headerText="Behaald door" sortBy="#{item.behaaldDoor}">
+							<h:outputText value="#{item.behaaldDoor}"/>
+						</p:column>
+						<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
+							<p:menuButton value="Opties">
+								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{hallOfFameBean.setCurrentItem(item.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{hallOfFameBean.setCurrentItem(item.id)}" update=":confirmDialogForm"/>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<h:panelGroup rendered="#{accountBean.loggedIn}">
+						<p>
+							<p:commandButton value="Nieuw item" action="#{hallOfFameBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+						</p>
+					</h:panelGroup>
+				</h:form>
+				<p:dialog header="Hall of fame item" widgetVar="dialog" modal="true" resizable="false" draggable="false">
+					<h:form id="dialogForm">
+						<p>
+							<p:outputLabel for="jaar" value="Jaar"/><br/>
+							<h:selectOneMenu id="jaar" value="#{hallOfFameBean.item.jaar}" required="true">
+								<f:selectItems value="#{constantsBean.years}"/>
+							</h:selectOneMenu>
+						</p>
+						<p>
+							<p:outputLabel for="prijs" value="Prijs"/><br/>
+							<p:inputText id="prijs" value="#{hallOfFameBean.item.prijs}" required="true"/>
+						</p>
+						<p>
+							<p:outputLabel for="behaaldDoor" value="Behaald door"/><br/>
+							<p:inputText id="behaaldDoor" value="#{hallOfFameBean.item.behaaldDoor}" required="true"/>
+						</p>
+						<p>
+							<p:commandButton value="Opslaan" actionListener="#{hallOfFameBean.save}" update=":dialogForm,:listForm:list"/>
+						</p>
+					</h:form>
+				</p:dialog>
+				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je dit hall of fame item wil verwijderen?">
+					<h:form id="confirmDialogForm">
+						<p:commandButton value="Ja" update=":listForm:list" action="#{hallOfFameBean.delete}" onsuccess="confirmDialog.hide()"/>
+						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+					</h:form>
+				</p:confirmDialog>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>
