@@ -3,3 +3,4 @@ target
 .settings
 /bin
 faces-config.pageflow
+*.iml
