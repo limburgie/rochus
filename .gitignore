@@ -4,3 +4,4 @@ target
 /bin
 faces-config.pageflow
 *.iml
+build.properties
