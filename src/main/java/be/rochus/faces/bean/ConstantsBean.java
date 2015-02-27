@@ -1,18 +1,16 @@
 package be.rochus.faces.bean;
 
+import be.rochus.domain.type.Ploeg;
+import be.rochus.domain.type.Series;
+import be.rochus.domain.type.WedstrijdType;
+import org.joda.time.DateTime;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
-
-import org.joda.time.DateTime;
-
-import be.rochus.domain.type.Ploeg;
-import be.rochus.domain.type.Series;
-import be.rochus.domain.type.WedstrijdType;
 
 @Named
 public class ConstantsBean {
@@ -61,5 +59,9 @@ public class ConstantsBean {
 	public List<Integer> getYears() {
 		return years;
 	}
-	
+
+	public int getCurrentYear() {
+		return DateTime.now().getYear();
+	}
+
 }
