@@ -17,6 +17,7 @@
 		<class>be.rochus.domain.VlasOption</class>
 		<class>be.rochus.domain.VlasResult</class>
 		<class>be.rochus.domain.Gebeurtenis</class>
+		<class>be.rochus.domain.DynamicText</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
