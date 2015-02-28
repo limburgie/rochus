@@ -1,19 +1,5 @@
 package be.rochus.faces.bean;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.primefaces.event.ScheduleEntrySelectEvent;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
-import org.primefaces.model.map.MapModel;
-import org.springframework.context.annotation.Scope;
-
 import be.rochus.domain.Event;
 import be.rochus.domain.Gebeurtenis;
 import be.rochus.domain.Schutter;
@@ -21,6 +7,18 @@ import be.rochus.domain.Wedstrijd;
 import be.rochus.faces.events.EventConverter;
 import be.rochus.faces.maps.MapModelFactory;
 import be.rochus.service.EventService;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
+import org.primefaces.model.map.MapModel;
+import org.springframework.context.annotation.Scope;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.Date;
 
 @Named @Scope("view")
 public class CalendarBean implements Serializable {
@@ -45,8 +43,8 @@ public class CalendarBean implements Serializable {
 		};
 	}
 	
-	public void selectEvent(ScheduleEntrySelectEvent selectEvent) {
-		selectedEvent = selectEvent.getScheduleEvent();
+	public void selectEvent(SelectEvent selectEvent) {
+		selectedEvent = (ScheduleEvent) selectEvent.getObject();
 		if(isGame()) {
 			mapModel = mapModelFactory.fromSchutterij(getWedstrijd().getOrganizer());
 		}

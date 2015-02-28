@@ -1,30 +1,20 @@
 <f:view xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Home</ui:define>
 		<ui:define name="body">
-			<p>
-				<h:graphicImage library="images/content" name="vaandel.png" styleClass="right"/>
-			</p>
-			<p>
-				Welkom op de website van de schutterij St.-Rochus Zutendaal!
-			</p>
-			<p>
-				<h:link outcome="/pages/geschiedenis" value="Sinds 1883"/> zijn wij reeds bedreven in het 
-				<h:link outcome="/pages/klepschieten" value="klepschieten"/>.
-				Momenteel schieten we in de hoogste reeks van het schuttersverbond Zand-Leemstreek, samen met 15 andere 
-				<h:link outcome="/pages/schutterijen" value="schutterijen"/>.
-			</p>
-			<p>
-				Vergeet zeker niet kennis te maken met onze <h:link outcome="/pages/schutters" value="schutters"/> 
-				en bekijk ons <h:link outcome="/pages/fotoalbums" value="fotoboek"/> voor leuke kiekjes van vroeger en nu.
-			</p>
-			<br/>
-			<h3>Groepsfoto 2013</h3>
-			<h:graphicImage library="images/content" name="groepsfoto-2013.jpg" alt="St.-Rochus Zutendaal groepsfoto 2013" styleClass="groepsfoto"/>
+			<div class="clear">
+				<div class="home-text">
+					<webfactor:dynamicText key="HOME"/>
+				</div>
+				<div class="home-banner">
+					<webfactor:dynamicImage key="VAANDEL" alt="Vaandel St-Rochus Zutendaal"/>
+				</div>
+			</div>
+
+			<webfactor:dynamicImage key="GROEPSFOTO" alt="St.-Rochus Zutendaal groepsfoto #{constantsBean.currentYear}" styleClass="home-group-photo"/>
 		</ui:define>
 	</ui:composition>
 </f:view>

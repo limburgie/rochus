@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="key"/>
+</composite:interface>
+
+<composite:implementation>
+	<ui:fragment rendered="#{!empty dynamicTextBean.getText(cc.attrs.key)}">
+		<h:outputText escape="false" value="#{dynamicTextBean.getText(cc.attrs.key).content}"
+					  rendered="#{!accountBean.loggedIn}"/>
+		<p:inplace widgetVar="inplaceText#{cc.attrs.key}" rendered="#{accountBean.loggedIn}">
+			<f:facet name="output">
+				<h:outputText escape="false" value="#{dynamicTextBean.getText(cc.attrs.key).content}"/>
+			</f:facet>
+			<f:facet name="input">
+				<h:form>
+					<p:editor value="#{dynamicTextBean.getText(cc.attrs.key).content}"/>
+					<p:commandButton value="Save" action="#{dynamicTextBean.save(cc.attrs.key)}"
+									 oncomplete="inplaceText#{cc.attrs.key}.save();"/>
+				</h:form>
+			</f:facet>
+		</p:inplace>
+	</ui:fragment>
+</composite:implementation>
+</html>

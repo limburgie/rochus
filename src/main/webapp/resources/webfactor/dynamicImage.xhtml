@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="key" required="true"/>
+	<composite:attribute name="alt"/>
+	<composite:attribute name="styleClass"/>
+</composite:interface>
+
+<composite:implementation>
+	<ui:fragment rendered="#{!empty dynamicImageBean.getImage(cc.attrs.key)}">
+		<p:graphicImage value="#{dynamicImageBean.imageContent}" cache="false" rendered="#{!accountBean.loggedIn}" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}">
+			<f:param name="key" value="#{cc.attrs.key}"/>
+		</p:graphicImage>
+		<p:inplace widgetVar="inplaceImage#{cc.attrs.key}" rendered="#{accountBean.loggedIn}">
+			<f:facet name="output">
+				<p:graphicImage value="#{dynamicImageBean.imageContent}" cache="false" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}">
+					<f:param name="key" value="#{cc.attrs.key}"/>
+				</p:graphicImage>
+			</f:facet>
+			<f:facet name="input">
+				<h:form enctype="multipart/form-data">
+					<p:fileUpload mode="advanced" multiple="false" auto="true" fileUploadListener="#{dynamicImageBean.handleFileUpload}" oncomplete="inplaceImage#{cc.attrs.key}.save()">
+						<f:attribute name="key" value="#{cc.attrs.key}"/>
+					</p:fileUpload>
+				</h:form>
+			</f:facet>
+		</p:inplace>
+	</ui:fragment>
+</composite:implementation>
+</html>
