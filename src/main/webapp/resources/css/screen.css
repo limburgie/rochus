@@ -142,12 +142,6 @@ ul.toplinks li a:hover {
 	margin-left: 210px;
 }
 
-.groepsfoto {
-	display: block;
-	margin: 15px 0 25px;
-	box-shadow: 3px 3px 10px #555;
-}
-
 .content {
 	margin: 0 -26px 1.5em;
 	padding: 1em 26px 0 26px;
@@ -217,6 +211,14 @@ p.center {
 	list-style-image: none;
 	background: transparent url('#{resource['images/menu-leaf.gif']}') no-repeat
 		1px .35em;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
 }
 
 .clear::after {
@@ -386,4 +388,27 @@ td.wrongAnswer, span.wrongAnswer {
 
 img.photo {
 	box-shadow: 1px 1px 7px #555;
+}
+
+.home-text {
+	float: left;
+	width: 460px;
+}
+
+.home-banner {
+	float: right;
+	width: 200px;
+}
+
+.home-group-photo {
+	display: block;
+	margin: 15px 0 25px;
+	box-shadow: 3px 3px 10px #555;
+	max-width: 100%;
+}
+
+.ui-inplace {
+	display: block;
+	background: #eee;
+	border: 2px dotted #ddd;
 }

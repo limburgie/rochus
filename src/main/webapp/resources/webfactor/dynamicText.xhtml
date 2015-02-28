@@ -14,7 +14,7 @@
 	<ui:fragment rendered="#{!empty dynamicTextBean.getText(cc.attrs.key)}">
 		<h:outputText escape="false" value="#{dynamicTextBean.getText(cc.attrs.key).content}"
 					  rendered="#{!accountBean.loggedIn}"/>
-		<p:inplace id="facet" widgetVar="inplace#{cc.attrs.key}" rendered="#{accountBean.loggedIn}">
+		<p:inplace widgetVar="inplaceText#{cc.attrs.key}" rendered="#{accountBean.loggedIn}">
 			<f:facet name="output">
 				<h:outputText escape="false" value="#{dynamicTextBean.getText(cc.attrs.key).content}"/>
 			</f:facet>
@@ -22,7 +22,7 @@
 				<h:form>
 					<p:editor value="#{dynamicTextBean.getText(cc.attrs.key).content}"/>
 					<p:commandButton value="Save" action="#{dynamicTextBean.save(cc.attrs.key)}"
-									 oncomplete="inplace#{cc.attrs.key}.save();"/>
+									 oncomplete="inplaceText#{cc.attrs.key}.save();"/>
 				</h:form>
 			</f:facet>
 		</p:inplace>

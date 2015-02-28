@@ -1,20 +1,20 @@
 <f:view xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Home</ui:define>
 		<ui:define name="body">
-			<p>
-				<h:graphicImage library="images/content" name="vaandel.png" styleClass="right"/>
-			</p>
+			<div class="clear">
+				<div class="home-text">
+					<webfactor:dynamicText key="HOME"/>
+				</div>
+				<div class="home-banner">
+					<webfactor:dynamicImage key="VAANDEL" alt="Vaandel St-Rochus Zutendaal"/>
+				</div>
+			</div>
 
-			<webfactor:dynamicText key="HOME"/>
-
-			<br/>
-			<h3>Groepsfoto 2013</h3>
-			<h:graphicImage library="images/content" name="groepsfoto-2013.jpg" alt="St.-Rochus Zutendaal groepsfoto 2013" styleClass="groepsfoto"/>
+			<webfactor:dynamicImage key="GROEPSFOTO" alt="St.-Rochus Zutendaal groepsfoto #{constantsBean.currentYear}" styleClass="home-group-photo"/>
 		</ui:define>
 	</ui:composition>
 </f:view>
