@@ -412,3 +412,7 @@ img.photo {
 	background: #eee;
 	border: 2px dotted #ddd;
 }
+
+.ui-inplace .ui-state-highlight {
+	background: #eee !important;
+}

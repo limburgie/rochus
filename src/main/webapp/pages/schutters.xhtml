@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Schutters</ui:define>
 		<ui:define name="body">
@@ -14,8 +15,8 @@
 				<h:form id="listForm">
 					<p:dataTable id="list" value="#{schutterBean.schutters}" var="schutter">
 						<p:column styleClass="asap">
-							<h:link outcome="/pages/schutter" rendered="#{!empty schutter.pictureUrl}">
-								<h:graphicImage url="#{schutter.pictureUrl}" styleClass="photo"/>
+							<h:link outcome="/pages/schutter">
+								<webfactor:image key="schutter#{schutter.id}"/>
 								<f:param name="schutterId" value="#{schutter.urlTitle}"/>
 							</h:link>
 						</p:column>

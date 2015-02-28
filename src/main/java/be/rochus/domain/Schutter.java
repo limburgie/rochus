@@ -1,19 +1,12 @@
 package be.rochus.domain;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
+import be.rochus.domain.type.Eventeable;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 
-import be.rochus.domain.type.Eventeable;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(uniqueConstraints={
@@ -33,9 +26,6 @@ public class Schutter implements Eventeable {
 	private String emailAddress;
 	private int joinYear;
 	private String urlTitle;
-	
-	@Column(length=500)
-	private String pictureUrl;
 	
 	public String getKoningLabel() {
 		return male ? "koning" : "koningin";
@@ -129,14 +119,6 @@ public class Schutter implements Eventeable {
 
 	public void setUrlTitle(String urlTitle) {
 		this.urlTitle = urlTitle;
-	}
-
-	public String getPictureUrl() {
-		return pictureUrl;
-	}
-
-	public void setPictureUrl(String pictureUrl) {
-		this.pictureUrl = pictureUrl;
 	}
 
 	@Override
