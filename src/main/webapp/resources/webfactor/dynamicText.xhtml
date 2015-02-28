@@ -23,6 +23,7 @@
 					<p:editor value="#{dynamicTextBean.getText(cc.attrs.key).content}"/>
 					<p:commandButton value="Save" action="#{dynamicTextBean.save(cc.attrs.key)}"
 									 oncomplete="inplaceText#{cc.attrs.key}.save();"/>
+					<p:commandButton value="Cancel" onclick="inplaceText#{cc.attrs.key}.cancel();"/>
 				</h:form>
 			</f:facet>
 		</p:inplace>

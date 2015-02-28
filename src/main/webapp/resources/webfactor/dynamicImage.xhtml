@@ -28,6 +28,7 @@
 					<p:fileUpload mode="advanced" multiple="false" auto="true" fileUploadListener="#{dynamicImageBean.handleFileUpload}" oncomplete="inplaceImage#{cc.attrs.key}.save()">
 						<f:attribute name="key" value="#{cc.attrs.key}"/>
 					</p:fileUpload>
+					<p:commandButton value="Cancel" onclick="inplaceImage#{cc.attrs.key}.cancel();"/>
 				</h:form>
 			</f:facet>
 		</p:inplace>
