@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Koningskoppel #{koningskoppelBean.koppel.jaar}</ui:define>
 		<ui:define name="body">
@@ -31,9 +32,7 @@
 						</h:panelGroup>
 					</li>
 				</ul>
-				<p>
-					<h:graphicImage url="#{koningskoppelBean.koppel.pictureUrl}" styleClass="photo"/>
-				</p>
+				<webfactor:dynamicImage key="koningskoppel#{koningskoppelBean.koppel.id}" styleClass="photo koningskoppel-detail-photo" aspectRatio="1.5"/>
 				<p>
 					<p:button value="Terug naar koningskoppels" outcome="/pages/koningskoppels"/>
 				</p>

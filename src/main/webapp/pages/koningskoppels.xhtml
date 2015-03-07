@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Koningskoppels</ui:define>
 		<ui:define name="body">
@@ -23,7 +24,7 @@
 						</p:column>
 						<p:column headerText="Foto" styleClass="asap">
 							<h:link outcome="/pages/koningskoppel">
-								<h:graphicImage url="#{koppel.thumbnailUrl}" styleClass="photo"/>
+								<webfactor:image key="koningskoppel#{koppel.id}" styleClass="photo koningskoppel-list-photo"/>
 								<f:param name="jaar" value="#{koppel.jaar}"/>
 							</h:link>
 						</p:column>

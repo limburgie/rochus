@@ -229,7 +229,7 @@ p.center {
 	visibility: hidden;
 }
 
-.ui-datable table {
+div.ui-datatable table {
 	table-layout: auto;
 }
 
@@ -424,4 +424,12 @@ img.profile-photo {
 
 .ui-inplace .ui-state-highlight {
 	background: #eee !important;
+}
+
+img.koningskoppel-list-photo {
+	width: 200px;
+}
+
+img.koningskoppel-detail-photo {
+	max-width: 500px;
 }
