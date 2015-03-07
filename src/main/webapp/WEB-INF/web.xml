@@ -22,6 +22,14 @@
 		<param-value>commons</param-value>
 	</context-param>
 	<servlet>
+		<servlet-name>Image Servlet</servlet-name>
+		<servlet-class>be.rochus.servlet.ImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Image Servlet</servlet-name>
+		<url-pattern>/image/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>

@@ -2,16 +2,13 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">#{schutterBean.schutter.fullName}</ui:define>
 		<ui:define name="body">
 			<div class="content clear">
-				<h:panelGroup rendered="#{!empty schutterBean.schutter.pictureUrl}">
-					<p>
-						<h:graphicImage url="#{schutterBean.schutter.pictureUrl}" styleClass="photo"/>
-					</p>
-				</h:panelGroup>
+				<webfactor:dynamicImage key="schutter#{schutterBean.schutter.id}" styleClass="profile-photo" aspectRatio="1.0"/>
 				<h:panelGroup rendered="#{!empty schutterBean.koningsPartners}">
 					<p>Werd #{schutterBean.schutter.koningLabel} in:</p>
 					<p:dataList value="#{schutterBean.koningsPartners}" var="partner" itemType="circle">

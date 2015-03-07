@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="key" required="true"/>
+	<composite:attribute name="alt"/>
+	<composite:attribute name="styleClass"/>
+</composite:interface>
+
+<composite:implementation>
+	<p:graphicImage value="/image?key=#{cc.attrs.key}" cache="false" rendered="#{!empty dynamicImageBean.getImage(cc.attrs.key)}" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}"/>
+</composite:implementation>
+</html>

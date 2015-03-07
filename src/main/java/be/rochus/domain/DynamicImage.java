@@ -1,6 +1,7 @@
 package be.rochus.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class DynamicImage {
@@ -13,6 +14,12 @@ public class DynamicImage {
 
 	@Column(name = "image_content") @Lob
 	private byte[] content;
+
+	private Date modifiedDate;
+
+	public boolean isBloodyEmpty() {
+		return content == null || content.length == 0;
+	}
 
 	public Long getId() {
 		return id;
@@ -36,6 +43,14 @@ public class DynamicImage {
 
 	public void setContent(byte[] content) {
 		this.content = content;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 
 }

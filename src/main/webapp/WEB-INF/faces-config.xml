@@ -16,4 +16,11 @@
 			<var>build</var>
 		</resource-bundle>
     </application>
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.ImageCropperRenderer</renderer-type>
+			<renderer-class>be.rochus.faces.renderer.CustomImageCropperRenderer</renderer-class>
+		</renderer>
+	</render-kit>
 </faces-config>

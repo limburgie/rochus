@@ -1,16 +1,5 @@
 package be.rochus.service.impl;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import be.rochus.domain.Koningskoppel;
 import be.rochus.domain.Photo;
 import be.rochus.domain.PhotoAlbum;
@@ -22,14 +11,18 @@ import be.rochus.service.PhotoService;
 import be.rochus.service.SchutterService;
 import be.rochus.service.exception.PhotoSynchronizationException;
 import be.rochus.util.StringUtils;
-
 import com.google.gdata.client.photos.PicasawebService;
-import com.google.gdata.data.photos.AlbumEntry;
-import com.google.gdata.data.photos.AlbumFeed;
-import com.google.gdata.data.photos.PhotoData;
-import com.google.gdata.data.photos.PhotoEntry;
-import com.google.gdata.data.photos.UserFeed;
+import com.google.gdata.data.photos.*;
 import com.google.gdata.util.ServiceException;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @Named
 public class PhotoServicePicasaImpl implements PhotoService {
@@ -119,7 +112,7 @@ public class PhotoServicePicasaImpl implements PhotoService {
 			if(schutter == null) {
 				continue;
 			}
-			schutter.setPictureUrl(photoEntry.getMediaContents().get(0).getUrl());
+//			schutter.setPictureContent(photoEntry.getMediaContents().get(0).getUrl());
 			schutterService.save(schutter);
 		}
 	}

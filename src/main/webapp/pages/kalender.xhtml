@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Kalender</ui:define>
 		<ui:define name="body">
@@ -23,7 +24,7 @@
 							<p><b>#{calendarBean.selectedEvent.title}</b></p>
 							<h:panelGroup rendered="#{calendarBean.birthday}">
 								<p:panelGrid columns="2">
-									<h:graphicImage url="#{calendarBean.schutter.pictureUrl}"/>
+									<webfactor:image key="schutter#{calendarBean.schutter.id}"/>
 									<h:outputText value="#{calendarBean.schutter.fullName} is vandaag jarig."/>
 								</p:panelGrid>
 							</h:panelGroup>

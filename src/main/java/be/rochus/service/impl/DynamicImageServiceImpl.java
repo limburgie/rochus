@@ -7,19 +7,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Date;
 
 @Named @Transactional(readOnly = true)
 public class DynamicImageServiceImpl implements DynamicImageService {
 
 	@Inject private DynamicImageRepository repository;
 
+	@Transactional
 	public DynamicImage getImage(String key) {
-		return repository.findByKey(key);
+		DynamicImage image = repository.findByKey(key);
+		if (image == null) {
+			image = new DynamicImage();
+			image.setKey(key);
+			image = save(image);
+		}
+		return image;
 	}
 
 	@Transactional
-	public void save(DynamicImage image) {
-		repository.save(image);
+	public DynamicImage save(DynamicImage image) {
+		image.setModifiedDate(new Date());
+		return repository.save(image);
 	}
 
 }

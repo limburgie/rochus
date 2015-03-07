@@ -6,6 +6,6 @@ public interface DynamicImageService {
 
 	DynamicImage getImage(String key);
 
-	void save(DynamicImage image);
+	DynamicImage save(DynamicImage image);
 
 }
