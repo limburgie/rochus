@@ -16,7 +16,7 @@
 					<p:dataTable id="list" value="#{schutterBean.schutters}" var="schutter">
 						<p:column styleClass="asap">
 							<h:link outcome="/pages/schutter">
-								<webfactor:image key="schutter#{schutter.id}"/>
+								<webfactor:image key="schutter#{schutter.id}" styleClass="profile-photo"/>
 								<f:param name="schutterId" value="#{schutter.urlTitle}"/>
 							</h:link>
 						</p:column>

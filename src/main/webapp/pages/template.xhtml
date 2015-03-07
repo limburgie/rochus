@@ -31,7 +31,7 @@
 						<h:form>
 							<ul class="toplinks">
 								<li>
-									<p:commandLink value="Login" onclick="loginDialog.show()" rendered="#{!accountBean.loggedIn}"/>
+									<p:commandLink value="Login" onclick="PF('loginDialog').show()" rendered="#{!accountBean.loggedIn}"/>
 									<p:commandLink value="Logout" action="#{accountBean.logout}" ajax="false" rendered="#{accountBean.loggedIn}"/>
 								</li>
 								<li><h:link value="Links" outcome="/pages/links"/></li>
@@ -123,14 +123,14 @@
 			var statusDlgTimer = null;
 			function showStatusDialog() {
 				if (statusDlgTimer == null) {
-					statusDlgTimer = setTimeout("statusDialog.show()", 1000);
+					statusDlgTimer = setTimeout("PF('statusDialog').show()", 1000);
 				}
 			}
 
 			function hideStatusDialog() {
 				if (statusDlgTimer != null) {
 					clearTimeout(statusDlgTimer);
-					statusDialog.hide();
+					PF('statusDialog').hide();
 					statusDlgTimer = null;
 				}
 			}

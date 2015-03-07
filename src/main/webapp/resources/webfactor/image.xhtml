@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui"
 	  xmlns:composite="http://java.sun.com/jsf/composite">
 
@@ -11,8 +10,6 @@
 </composite:interface>
 
 <composite:implementation>
-	<p:graphicImage value="#{dynamicImageBean.imageContent}" cache="false" rendered="#{!empty dynamicImageBean.getImage(cc.attrs.key)}" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}">
-		<f:param name="key" value="#{cc.attrs.key}"/>
-	</p:graphicImage>
+	<p:graphicImage value="/image?key=#{cc.attrs.key}" cache="false" rendered="#{!empty dynamicImageBean.getImage(cc.attrs.key)}" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}"/>
 </composite:implementation>
 </html>

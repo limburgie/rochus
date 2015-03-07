@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
 	  xmlns:composite="http://java.sun.com/jsf/composite">
 
@@ -10,28 +9,30 @@
 	<composite:attribute name="key" required="true"/>
 	<composite:attribute name="alt"/>
 	<composite:attribute name="styleClass"/>
+	<composite:attribute name="aspectRatio"/>
 </composite:interface>
 
 <composite:implementation>
-	<ui:fragment rendered="#{!empty dynamicImageBean.getImage(cc.attrs.key)}">
-		<p:graphicImage value="#{dynamicImageBean.imageContent}" cache="false" rendered="#{!accountBean.loggedIn}" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}">
-			<f:param name="key" value="#{cc.attrs.key}"/>
-		</p:graphicImage>
-		<p:inplace widgetVar="inplaceImage#{cc.attrs.key}" rendered="#{accountBean.loggedIn}">
-			<f:facet name="output">
-				<p:graphicImage value="#{dynamicImageBean.imageContent}" cache="false" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}">
-					<f:param name="key" value="#{cc.attrs.key}"/>
-				</p:graphicImage>
-			</f:facet>
-			<f:facet name="input">
-				<h:form enctype="multipart/form-data">
-					<p:fileUpload mode="advanced" multiple="false" auto="true" fileUploadListener="#{dynamicImageBean.handleFileUpload}" oncomplete="inplaceImage#{cc.attrs.key}.save()">
+	<p:graphicImage value="/image?key=#{cc.attrs.key}" cache="false" rendered="#{!accountBean.loggedIn}" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}"/>
+	<p:inplace widgetVar="inplaceImage#{cc.attrs.key}" rendered="#{accountBean.loggedIn}">
+		<f:facet name="output">
+			<p:graphicImage value="/image?key=#{cc.attrs.key}" cache="false" alt="#{cc.attrs.alt}" styleClass="#{cc.attrs.styleClass}"/>
+		</f:facet>
+		<f:facet name="input">
+			<h:form enctype="multipart/form-data">
+				<p:outputPanel rendered="#{empty dynamicImageBean.uploadedFileName}">
+					<p:fileUpload mode="advanced" auto="true" fileUploadListener="#{dynamicImageBean.handleFileUpload}" update="@form">
 						<f:attribute name="key" value="#{cc.attrs.key}"/>
 					</p:fileUpload>
-					<p:commandButton value="Cancel" onclick="inplaceImage#{cc.attrs.key}.cancel();"/>
-				</h:form>
-			</f:facet>
-		</p:inplace>
-	</ui:fragment>
+					<p:commandButton value="Cancel" action="#{dynamicImageBean.cancel}" oncomplete="PF('inplaceImage#{cc.attrs.key}').cancel();"/>
+				</p:outputPanel>
+				<p:outputPanel rendered="#{!empty dynamicImageBean.uploadedFileName}">
+					<p:imageCropper widgetVar="cropper#{cc.attrs.key}" value="#{dynamicImageBean.croppedImage}" image="/uploads/#{dynamicImageBean.uploadedFileName}" rendered="#{empty cc.attrs.aspectRatio}"/>
+					<p:imageCropper widgetVar="cropper#{cc.attrs.key}" value="#{dynamicImageBean.croppedImage}" image="/uploads/#{dynamicImageBean.uploadedFileName}" aspectRatio="#{cc.attrs.aspectRatio}" rendered="#{!empty cc.attrs.aspectRatio}"/>
+					<p:commandButton value="Save" action="#{dynamicImageBean.crop}" oncomplete="PF('inplaceImage#{cc.attrs.key}').cancel();"/>
+				</p:outputPanel>
+			</h:form>
+		</f:facet>
+	</p:inplace>
 </composite:implementation>
 </html>

@@ -229,6 +229,10 @@ p.center {
 	visibility: hidden;
 }
 
+.ui-datable table {
+	table-layout: auto;
+}
+
 .ui-datatable.noHeader thead {
 	display: none;
 }
@@ -388,6 +392,11 @@ td.wrongAnswer, span.wrongAnswer {
 
 img.photo {
 	box-shadow: 1px 1px 7px #555;
+}
+
+img.profile-photo {
+	width: 100px;
+	height: 100px;
 }
 
 .home-text {
