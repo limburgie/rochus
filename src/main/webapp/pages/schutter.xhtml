@@ -8,7 +8,7 @@
 		<ui:define name="title">#{schutterBean.schutter.fullName}</ui:define>
 		<ui:define name="body">
 			<div class="content clear">
-				<webfactor:dynamicImage key="schutter#{schutterBean.schutter.id}" styleClass="profile-photo" aspectRatio="1.0"/>
+				<webfactor:dynamicImage key="schutter#{schutterBean.schutter.id}" styleClass="photo profile-photo" aspectRatio="1.0"/>
 				<h:panelGroup rendered="#{!empty schutterBean.koningsPartners}">
 					<p>Werd #{schutterBean.schutter.koningLabel} in:</p>
 					<p:dataList value="#{schutterBean.koningsPartners}" var="partner" itemType="circle">

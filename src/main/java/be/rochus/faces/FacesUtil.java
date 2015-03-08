@@ -1,6 +1,6 @@
 package be.rochus.faces;
 
-import java.io.IOException;
+import org.primefaces.context.RequestContext;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -8,8 +8,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-
-import org.primefaces.context.RequestContext;
+import java.io.IOException;
 
 @Named
 public class FacesUtil {
@@ -46,7 +45,7 @@ public class FacesUtil {
 	}
 	
 	public void closeDialog(String dialogName) {
-		RequestContext.getCurrentInstance().execute(dialogName+".hide()");
+		RequestContext.getCurrentInstance().execute("PF('"+dialogName+"').hide()");
 	}
 	
 	public void redirect(String url) {

@@ -19,7 +19,7 @@
 							willekeurige volgorde aan bod. Succes!
 						</p>
 						<p style="text-align:center">
-							<p:commandButton value="Start een nieuwe test" onclick="startDialog.show()" styleClass="start-test"/>
+							<p:commandButton value="Start een nieuwe test" onclick="PF('startDialog').show()" styleClass="start-test"/>
 						</p>
 						<h:panelGroup rendered="#{!empty vlasBean.results}">
 							<br/>
@@ -56,7 +56,7 @@
 						</p:selectOneRadio>
 						<p>
 							<p:commandButton value="Volgende vraag" actionListener="#{vlasBean.next}" update=":questionForm" rendered="#{!vlasBean.lastQuestion}"/>
-							<p:commandButton value="Resultaat bekijken" actionListener="#{vlasBean.save}" onsuccess="resultsDialog.show()" update=":resultsForm" rendered="#{vlasBean.lastQuestion}"/>
+							<p:commandButton value="Resultaat bekijken" actionListener="#{vlasBean.save}" onsuccess="PF('resultsDialog').show()" update=":resultsForm" rendered="#{vlasBean.lastQuestion}"/>
 						</p>
 					</h:panelGroup>
 				</h:form>
@@ -91,7 +91,7 @@
 							</p:dataTable>
 						</p:scrollPanel>
 						<p>
-							<p:commandButton value="Sluiten" actionListener="#{vlasBean.reset}" onsuccess="resultsDialog.hide()" update=":startButtonForm,:questionForm"/>
+							<p:commandButton value="Sluiten" actionListener="#{vlasBean.reset}" onsuccess="PF('resultsDialog').hide()" update=":startButtonForm,:questionForm"/>
 						</p>
 					</h:form>
 				</p:dialog>
@@ -110,7 +110,7 @@
 							<p:slider for="nbQuestions" minValue="5" maxValue="#{vlasBean.maxNbQuestions}"/>
 						</p>
 						<p>
-							<p:commandButton value="Start!" actionListener="#{vlasBean.start}" update=":startButtonForm,:questionForm" onsuccess="startDialog.hide()"/>
+							<p:commandButton value="Start!" actionListener="#{vlasBean.start}" update=":startButtonForm,:questionForm" onsuccess="PF('startDialog').hide()"/>
 						</p>
 					</h:form>
 				</p:dialog>

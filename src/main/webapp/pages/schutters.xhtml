@@ -16,7 +16,7 @@
 					<p:dataTable id="list" value="#{schutterBean.schutters}" var="schutter">
 						<p:column styleClass="asap">
 							<h:link outcome="/pages/schutter">
-								<webfactor:image key="schutter#{schutter.id}" styleClass="profile-photo"/>
+								<webfactor:image key="schutter#{schutter.id}" styleClass="photo profile-photo"/>
 								<f:param name="schutterId" value="#{schutter.urlTitle}"/>
 							</h:link>
 						</p:column>
@@ -32,14 +32,14 @@
 						</p:column>
 						<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
 							<p:menuButton value="Opties">
-								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{schutterBean.setCurrentSchutter(schutter.id)}" update=":dialogForm"/>
-								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{schutterBean.setCurrentSchutter(schutter.id)}" update=":confirmDialogForm"/>
+								<p:menuitem value="Aanpassen" onsuccess="PF('dialog').show()" actionListener="#{schutterBean.setCurrentSchutter(schutter.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="PF('confirmDialog').show()" actionListener="#{schutterBean.setCurrentSchutter(schutter.id)}" update=":confirmDialogForm"/>
 							</p:menuButton>
 						</p:column>
 					</p:dataTable>
 					<h:panelGroup rendered="#{accountBean.loggedIn}">
 						<p>
-							<p:commandButton value="Nieuwe schutter" action="#{schutterBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+							<p:commandButton value="Nieuwe schutter" action="#{schutterBean.prepareNew}" update=":dialogForm" onsuccess="PF('dialog').show()"/>
 						</p>
 					</h:panelGroup>
 				</h:form>
@@ -82,25 +82,10 @@
 						</p>
 					</h:form>
 				</p:dialog>
-				<!--  
-				<p:dialog header="Foto bijwerken" widgetVar="fotoDialog" modal="true" resizable="false">
-					<h:form id="fotoDialogForm">
-						<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="true" fileUploadListener="#{schutterBean.pictureUploaded}"
-							label="Uploaden" update="cropper"/>
-						<h:panelGroup id="cropper">
-							<p:imageCropper rendered="#{!empty schutterBean.pictureFileName}" value="#{schutterBean.croppedPicture}"
-								image="#{schutterBean.pictureFileName}" aspectRatio="1.0" initialCoords="0,0,100,100"/>
-						</h:panelGroup>
-						<p>
-							<p:commandButton value="Uitknippen" actionListener="#{schutterBean.crop}" update=":fotoDialogForm,:listForm:list"/>
-						</p>
-					</h:form>
-				</p:dialog>
-				-->
 				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je deze schutter wil verwijderen?">
 					<h:form id="confirmDialogForm">
-						<p:commandButton value="Ja" update=":listForm:list" action="#{schutterBean.delete}" onsuccess="confirmDialog.hide()"/>
-						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+						<p:commandButton value="Ja" update=":listForm:list" action="#{schutterBean.delete}" onsuccess="PF('confirmDialog').hide()"/>
+						<p:button value="Annuleren" onclick="PF('confirmDialog').hide()"/>
 					</h:form>
 				</p:confirmDialog>
 			</div>

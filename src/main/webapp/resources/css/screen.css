@@ -433,3 +433,7 @@ img.koningskoppel-list-photo {
 img.koningskoppel-detail-photo {
 	max-width: 500px;
 }
+
+.ui-panelgrid td.ui-panelgrid-cell {
+	border-width: 0;
+}

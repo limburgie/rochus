@@ -14,17 +14,20 @@
 				</p>
 				<h:form>
 					<p:schedule value="#{calendarBean.scheduleModel}" locale="nl"
-						draggable="false" resizable="false" firstHour="9" slotMinutes="60" axisFormat="HH:mm" 
-						timeFormat="HH:mm', columnFormat : {month : 'ddd', week : 'ddd d/M', day : 'dddd d/M'}, dummy:'"
+						draggable="false" resizable="false" firstHour="9" slotMinutes="60" axisFormat="HH:mm"
+						timeFormat="HH:mm" columnFormat="month:'ddd',week:'ddd d/M',day:'dddd d/M'"
 						minTime="9" maxTime="22" rightHeaderTemplate="month,agendaWeek" view="month">
-						<p:ajax event="eventSelect" listener="#{calendarBean.selectEvent}" update="eventDetails" oncomplete="eventDialog.show()"/>
+						<p:ajax event="eventSelect" listener="#{calendarBean.selectEvent}" update="eventDetails" oncomplete="PF('eventDialog').show()"/>
 					</p:schedule>
 					<h:panelGroup id="eventDetails">
 						<p:dialog widgetVar="eventDialog" header="#{calendarBean.label}" modal="true" resizable="false">
 							<p><b>#{calendarBean.selectedEvent.title}</b></p>
 							<h:panelGroup rendered="#{calendarBean.birthday}">
 								<p:panelGrid columns="2">
-									<webfactor:image key="schutter#{calendarBean.schutter.id}"/>
+									<h:link outcome="/pages/schutter">
+										<webfactor:image key="schutter#{calendarBean.schutter.id}" styleClass="photo profile-photo"/>
+										<f:param name="schutterId" value="#{calendarBean.schutter.urlTitle}"/>
+									</h:link>
 									<h:outputText value="#{calendarBean.schutter.fullName} is vandaag jarig."/>
 								</p:panelGrid>
 							</h:panelGroup>

@@ -1,20 +1,11 @@
-<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+<f:view xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:webfactor="http://java.sun.com/jsf/composite/webfactor">
 	<ui:composition template="template.xhtml">
 		<ui:define name="title">Links</ui:define>
 		<ui:define name="body">
 			<div class="content clear">
-				<ul>
-					<li><a href="http://www.verbondzandenleemstreek.be" target="_blank">Verbond Zand- en Leemstreek</a></li>
-					<li><a href="http://www.sint-lutgardus.be" target="_blank">St.-Lutgardus Martenslinde</a></li>
-					<li><a href="http://www.sintkristoffel.be" target="_blank">St.-Kristoffel Munsterbilzen</a></li>
-					<li><a href="http://www.schuttersgilderijkhoven.be" target="_blank">Sint-Blasius Rijkhoven</a></li>
-					<li><a href="http://www.pvksglimburg.be" target="_blank">PVKSG Limburg</a></li>
-					<li><a href="http://www.everyoneweb.com/StAmandusSpouwen" target="_blank">St.-Amandus Spouwen</a></li>
-					<li><a href="http://www.ksgb.be" target="_blank">St.-Gertrudis Beverst</a></li>
-					<li><a href="http://schutterij-olvp.be" target="_blank">OLV Presentatie Eigenbilzen</a></li>
-				</ul>
+				<webfactor:dynamicText key="links"/>
 			</div>
 		</ui:define>
 	</ui:composition>

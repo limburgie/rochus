@@ -40,14 +40,14 @@
 						</p:column>
 						<p:column rendered="#{accountBean.loggedIn}" styleClass="asap">
 							<p:menuButton value="Opties">
-								<p:menuitem value="Aanpassen" onsuccess="dialog.show()" actionListener="#{koningskoppelBean.setCurrentKoppel(koppel.id)}" update=":dialogForm"/>
-								<p:menuitem value="Verwijderen" onsuccess="confirmDialog.show()" actionListener="#{koningskoppelBean.setCurrentKoppel(koppel.id)}" update=":confirmDialogForm"/>
+								<p:menuitem value="Aanpassen" onsuccess="PF('dialog').show()" actionListener="#{koningskoppelBean.setCurrentKoppel(koppel.id)}" update=":dialogForm"/>
+								<p:menuitem value="Verwijderen" onsuccess="PF('confirmDialog').show()" actionListener="#{koningskoppelBean.setCurrentKoppel(koppel.id)}" update=":confirmDialogForm"/>
 							</p:menuButton>
 						</p:column>
 					</p:dataTable>
 					<h:panelGroup rendered="#{accountBean.loggedIn}">
 						<p>
-							<p:commandButton value="Nieuw koningskoppel" action="#{koningskoppelBean.prepareNew}" update=":dialogForm" onsuccess="dialog.show()"/>
+							<p:commandButton value="Nieuw koningskoppel" action="#{koningskoppelBean.prepareNew}" update=":dialogForm" onsuccess="PF('dialog').show()"/>
 						</p>
 					</h:panelGroup>
 				</h:form>
@@ -93,8 +93,8 @@
 				</p:dialog>
 				<p:confirmDialog widgetVar="confirmDialog" header="Ben je zeker?" message="Zeker dat je dit koningskoppel wil verwijderen?">
 					<h:form id="confirmDialogForm">
-						<p:commandButton value="Ja" update=":listForm:list" action="#{koningskoppelBean.delete}" onsuccess="confirmDialog.hide()"/>
-						<p:button value="Annuleren" onclick="confirmDialog.hide()"/>
+						<p:commandButton value="Ja" update=":listForm:list" action="#{koningskoppelBean.delete}" onsuccess="PF('confirmDialog').hide()"/>
+						<p:button value="Annuleren" onclick="PF('confirmDialog').hide()"/>
 					</h:form>
 				</p:confirmDialog>
 			</div>
