@@ -13,7 +13,7 @@
 					en andere belangrijke gebeurtenissen i.v.m. onze schutterij.
 				</p>
 				<h:form>
-					<p:schedule value="#{calendarBean.scheduleModel}" locale="nl"
+					<p:schedule value="#{calendarBean.scheduleModel}" locale="nl" timeZone="Europe/Brussels"
 						draggable="false" resizable="false" firstHour="9" slotMinutes="60" axisFormat="HH:mm"
 						timeFormat="HH:mm" columnFormat="month:'ddd',week:'ddd d/M',day:'dddd d/M'"
 						minTime="9" maxTime="22" rightHeaderTemplate="month,agendaWeek" view="month">

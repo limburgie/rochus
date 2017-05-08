@@ -22,6 +22,5 @@ PrimeFaces.locales['nl'] = {
 	month : 'maand',
 	week : 'week',
 	day : 'dag',
-	allDayText : 'de hele dag',
-	dateFormat : 'dd/mm'
+	allDayText : 'de hele dag'
 };

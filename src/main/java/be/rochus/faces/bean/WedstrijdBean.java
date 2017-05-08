@@ -1,19 +1,18 @@
 package be.rochus.faces.bean;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import be.rochus.domain.Wedstrijd;
+import be.rochus.faces.FacesUtil;
+import be.rochus.service.WedstrijdService;
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.joda.time.DateTime;
-import org.springframework.context.annotation.Scope;
-
-import be.rochus.domain.Wedstrijd;
-import be.rochus.faces.FacesUtil;
-import be.rochus.service.WedstrijdService;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Named @Scope("view")
 public class WedstrijdBean implements Serializable {
@@ -46,7 +45,7 @@ public class WedstrijdBean implements Serializable {
 			return;
 		}
 		DateTime d = new DateTime(wedstrijd.getDate());
-		DateTime t = new DateTime(time);
+		LocalTime t = new LocalTime(time);
 		d = d.withHourOfDay(t.getHourOfDay()).withMinuteOfHour(t.getMinuteOfHour());
 		wedstrijd.setDate(d.toDate());
 	}
